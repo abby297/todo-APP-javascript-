@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TODOs LIST</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .descript_list {
+            text-transform: lowercase;
+        }
+
+        .NewClass {
+            text-transform: uppercase;
+        }
+    </style>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav style="margin-top: -8px;" class="navbar navbar-expand-lg bg-light">
+        <div style="background-color:rgb(120, 247, 120); " class="container-fluid">
+            <a class="navbar-brand" href="#">TODOs LIST</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page"  id="second_page">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Items</a>
+                    </li>
+
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="head text-center">
+        <h2>TODOs list</h2>
+    </div>
+    <div class="container my-4 " style="max-width: 65%;">
+
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Title</label>
+            <input type="text" id="title" class="form-control NewClass">
+            <div id="emailHelp" class="form-text">Title of the item that you want to add in the list </div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">DESCRIPTION</label>
+            <textarea class="form-control" id="dsptn" rows="3"></textarea>
+        </div>
+        <div class="date" style="margin: 15px 0; position: relative; max-width: 150px;">
+            <input   class=" btn btn-sm " id="datepicker" type="date" placeholder="Pick Date"></input>
+        </div>
+
+        <button type="" style="background-color: rgb(49, 238, 49);" class="btn btn-primary" id="add">Add Item</button>
+        <button type="" style="background-color: rgb(253, 46, 46);" class="btn btn-primary" onclick="cleared()">Clear All</button>
+       
+
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+
+    <div class="informaton text-center" style=" margin: auto; max-width: 
+        65% ;position: relative;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">S.No.</th>
+                    <th scope="col">ITEMS</th>
+                    <th scope="col">DESCRIPTION</th>
+                    <th scope="col">DATE</th>
+                    <th scope="col">ACTION</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- <tr>
+                    <th scope="row">1</th>
+                    <td>LOUNDARY</td>
+                    <td class="descript_list">SCHOOL UNIFORM CLEANSING</td>
+                    <td><button class="btn btns btn-primary">Delete</button></td>
+                </tr> -->
+
+
+            </tbody>
+        </table>
+    </div>
+
+</body>
+<script>
+    function GetandUpdate() {
+        addtitle = document.getElementById("title").value;
+        adddescription = document.getElementById("dsptn").value;
+        PickedDate = document.getElementById("datepicker").value;
+        if (localStorage.getItem('itemjson') == null) {
+            array = [];
+            array.push([addtitle, adddescription,PickedDate]);
+            localStorage.setItem('itemjson', JSON.stringify(array));
+        }
+        else {
+            stringArray = localStorage.getItem('itemjson');
+            array = JSON.parse(stringArray);
+            array.push([addtitle, adddescription,PickedDate]);
+            localStorage.setItem('itemjson', JSON.stringify(array))
+            array.pop();
+        }
+        update();
+    };
+    function update() {
+        if (localStorage.getItem('itemjson') == null) {
+            array = [];
+
+        }
+        else {
+            stringArray = localStorage.getItem('itemjson');
+            array = JSON.parse(stringArray);
+
+        }
+
+        // POPULATE THE TABLE
+        tableBody = document.getElementById("tableBody");
+        str = ``;
+        array.forEach((element, index) => {
+            str +=
+                `<tr>
+                    <th scope="row">${index + 1}</th>
+                    <td>${element[0]}</td>
+                    <td class="descript_list">${element[1]}</td>
+                    <td>${element[2]}</td>
+                    <td><button class="btn btn-sm btn-primary" style="background-color: rgb(253, 46, 46);"  onclick="deleted(${index})">Delete</button></td>
+                    </tr>`;
+        });
+        tableBody.innerHTML = str;
+        
+      
+    }
+    add = document.getElementById("add");                         //here try changing the name of the variable.
+    add.addEventListener("click", GetandUpdate);
+    update();
+    function deleted(itemIndex) {
+        stringArray = localStorage.getItem('itemjson');
+        array = JSON.parse(stringArray);
+        array.splice(itemIndex, 1);
+        localStorage.setItem('itemjson', JSON.stringify(array));
+        update();
+    }
+    function cleared() {
+        if (confirm("You are about to clear the list?")) {
+            localStorage.clear();
+            update();
+        }
+    }
+    config = {
+        altInput: true,
+        altFormat: "F j, Y",
+        dateFormat: "Y-m-d",
+    }
+    flatpickr(datepicker, config);
+   
+    document.getElementById("second_page").style.cursor="pointer";
+    second_page=document.getElementById("second_page")
+    second_page.addEventListener("click",()=>{
+        window.location="page2.html";
+
+    })
+</script>
+
+
+
+
+</html>
