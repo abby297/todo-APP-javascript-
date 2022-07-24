@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TODOs LIST</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
@@ -13,12 +14,102 @@
             padding: 0;
         }
 
+        html {
+            box-sizing: border-box;
+
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            position: center;
+            text-align: center;
+            background-image: linear-gradient(to top, rgba(139, 69, 19, .5), rgba(165, 42, 42, .4)), url(./images/img.jpg);
+            width: 100%;
+            min-height: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            
+
+        }
+
+
         .descript_list {
             text-transform: lowercase;
         }
 
         .NewClass {
             text-transform: uppercase;
+        }
+
+        .add {
+            margin-right: 5px;
+        }
+
+        .add,
+        .del {
+            padding: 5px;
+            transition: .2s;
+            border-radius: 10px;
+
+
+        }
+
+        .add:hover,
+        .del:hover {
+            transform: scale(1.1);
+            color: black;
+
+        }
+
+        .btn {
+            transition-delay: 3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+        }
+
+        .navbar {
+            opacity: .8;
+        }
+
+
+        @media screen and (max-width:580px) {
+
+            .table {
+                position: relative;
+                margin: auto;
+                width: 70%;
+                text-transform: lowercase;
+                font-size: smaller;
+                padding: 0;
+                box-sizing: border-box;
+                background-color: #fff3e6;
+            }
+
+            .navbar {
+                margin: auto;
+                position: relative;
+                width: 100%;
+
+                /* width: ; */
+
+            }
+
+            .informaton {
+                position: relative;
+                max-width: 100%;
+                width: 70%;
+
+            }
+
+
+
         }
     </style>
 
@@ -28,7 +119,7 @@
 
 <body>
     <nav style="margin-top: -8px;" class="navbar navbar-expand-lg bg-light">
-        <div style="background-color:rgb(120, 247, 120); " class="container-fluid">
+        <div class="container-fluid">
             <a class="navbar-brand" href="#">TODOs LIST</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -38,7 +129,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page"  id="second_page">Home</a>
+                        <a class="nav-link active" aria-current="page" id="second_page">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="#">Items</a>
@@ -58,21 +149,26 @@
     <div class="container my-4 " style="max-width: 65%;">
 
         <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Title</label>
-            <input type="text" id="title" class="form-control NewClass">
-            <div id="emailHelp" class="form-text">Title of the item that you want to add in the list </div>
+            <label for="exampleInputEmail1" class="form-label" style="font-weight:bolder ;">Title</label>
+            <input type="text" id="title" class="form-control NewClass" ; style=" background-color: #faf2f2;">
+            <div id="emailHelp" class="form-text" ;style="font-weight:bolder ;">Title of the item that you want to add
+                in the list </div>
         </div>
         <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">DESCRIPTION</label>
-            <textarea class="form-control" id="dsptn" rows="3"></textarea>
+            <label for="exampleInputPassword1" class="form-label" ; style="font-weight:bolder ; ">DESCRIPTION</label>
+            <textarea class="form-control" id="dsptn" rows="3" placeholder="type here.." ;
+                style=" background-color: #faf2f2;"></textarea>
         </div>
         <div class="date" style="margin: 15px 0; position: relative; max-width: 150px;">
-            <input   class=" btn btn-sm " id="datepicker" type="date" placeholder="Pick Date"></input>
+            <input class=" btn btn-sm " id="datepicker" type="date" placeholder="Pick Date"></input>
         </div>
 
-        <button type="" style="background-color: rgb(49, 238, 49);" class="btn btn-primary" id="add">Add Item</button>
-        <button type="" style="background-color: rgb(253, 46, 46);" class="btn btn-primary" onclick="cleared()">Clear All</button>
-       
+        <button class="add" ;type=""
+            style=" transition: .3s;  ;border: none ;background-color:#66ff8c; color: black;font-weight:600 ; "
+            class="btn btn-primary" id="add">Add Item</button>
+        <button class="del" ; type="" style="border: none; background-color: 	#ff6666; color: black; font-weight:600;"
+            class="btn btn-primary" onclick="cleared()">Clear All</button>
+
 
 
     </div>
@@ -81,7 +177,7 @@
         crossorigin="anonymous"></script>
 
     <div class="informaton text-center" style=" margin: auto; max-width: 
-        65% ;position: relative;">
+        65% ;position: relative; ">
         <table class="table">
             <thead>
                 <tr>
@@ -113,15 +209,16 @@
         PickedDate = document.getElementById("datepicker").value;
         if (localStorage.getItem('itemjson') == null) {
             array = [];
-            array.push([addtitle, adddescription,PickedDate]);
+            array.push([addtitle, adddescription, PickedDate]);
             localStorage.setItem('itemjson', JSON.stringify(array));
+
         }
         else {
             stringArray = localStorage.getItem('itemjson');
             array = JSON.parse(stringArray);
-            array.push([addtitle, adddescription,PickedDate]);
+            array.push([addtitle, adddescription, PickedDate]);
             localStorage.setItem('itemjson', JSON.stringify(array))
-            array.pop();
+            // array.pop();
         }
         update();
     };
@@ -142,16 +239,16 @@
         array.forEach((element, index) => {
             str +=
                 `<tr>
-                    <th scope="row">${index + 1}</th>
-                    <td>${element[0]}</td>
-                    <td class="descript_list">${element[1]}</td>
-                    <td>${element[2]}</td>
+                    <th scope="row" style="font-weight:bolder">${index + 1}</th>
+                    <td style="font-weight:bolder">${element[0]}</td>
+                    <td class="descript_list" style="font-weight:bolder">${element[1]}</td>
+                    <td style="font-weight:bolder">${element[2]}</td>
                     <td><button class="btn btn-sm btn-primary" style="background-color: rgb(253, 46, 46);"  onclick="deleted(${index})">Delete</button></td>
                     </tr>`;
         });
         tableBody.innerHTML = str;
-        
-      
+
+
     }
     add = document.getElementById("add");                         //here try changing the name of the variable.
     add.addEventListener("click", GetandUpdate);
@@ -175,13 +272,15 @@
         dateFormat: "Y-m-d",
     }
     flatpickr(datepicker, config);
-   
-    document.getElementById("second_page").style.cursor="pointer";
-    second_page=document.getElementById("second_page")
-    second_page.addEventListener("click",()=>{
-        window.location="page2.html";
+
+    document.getElementById("second_page").style.cursor = "pointer";
+    second_page = document.getElementById("second_page")
+    second_page.addEventListener("click", () => {
+        window.location = "page2.html";
 
     })
+
+
 </script>
 
 
