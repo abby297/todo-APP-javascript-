@@ -77,6 +77,9 @@
         .navbar {
             opacity: .9;
         }
+        #title, #dsptn{
+            box-shadow: 5px 5px #8c8d91;
+        }
 
 
         @media screen and (max-width:580px) {
@@ -256,11 +259,12 @@
     function deleted(itemIndex) {
         stringArray = localStorage.getItem('itemjson');
         array = JSON.parse(stringArray);
-        array.splice(itemIndex, 1);
+        array.splice(itemIndex,1);
         localStorage.setItem('itemjson', JSON.stringify(array));
         update();
     }
     function cleared() {
+
         if (confirm("You are about to clear the list?")) {
             localStorage.clear();
             update();
